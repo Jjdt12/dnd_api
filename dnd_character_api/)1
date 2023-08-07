@@ -1,0 +1,13 @@
+from flask import Flask, jsonify, request
+app = Flask(__name__)
+from dnd_character_api.model.expense import Expense, ExpenseSchema
+from dnd_character_api.model.income import Income, IncomeSchema
+from dnd_character_api.model.transaction_type import TransactionType
+
+app = Flask(__name__)
+
+transactions = [
+        Income('Salary', 5000),
+        Income('Dividends', 200),
+        Expense('Pizza', 50),
+
