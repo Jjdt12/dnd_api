@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 flask = "*"
 marshmallow = "*"
+openapi = "*"
+openai = "*"
 
 [dev-packages]
 
