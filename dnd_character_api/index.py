@@ -1,5 +1,5 @@
 import openai
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 from random import randint
 from dnd_character_api.model.income import Character, CharacterSchema
 
@@ -11,7 +11,7 @@ def d20():
 def rand_four():
     return randint(0, 3)
 
-def get_backstory():
+def get_backstory(race, cclass):
     backstory_q = 'Generate a three sentence dungeons and dragons backstory for a {race} {cclass}, \
                    make the characters name the first word followed by a comma.'.format(race = race, cclass = cclass)
     openai.api_key = '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'
@@ -22,29 +22,27 @@ def get_backstory():
 
 @app.route('/characters')
 def get_incomes():
+
+    cclass = ['Warrior', 'Cleric', 'Ranger', 'Thief']
+    race = ['Human', 'Elf', 'Halfling', 'Dwarf']
+    cclass = cclass[rand_four()]
+    race = race[rand_four()]
+    backstory = get_backstory(race, cclass)
+    name = backstory.split(",")
+    name = name[0]
+    character = [
+            Character(\
+                   ['Str: ' + str(d20()),\
+                    'Dex: ' + str(d20()),\
+                    'Con: ' + str(d20()),\
+                    'Int: ' + str(d20()),\
+                    'Wis: ' + str(d20()),\
+                    'Chr: ' + str(d20())],\
+                    name, race, cclass, backstory),
+            ]
     schema = CharacterSchema(many=True)
-    character = schema.dump(transactions)
+    character = schema.dump(character)
     return jsonify(character)
 
 if __name__ == "__main__":
     app.run()
-
-cclass = ['Warrior', 'Cleric', 'Ranger', 'Thief']
-race = ['Human', 'Elf', 'Halfling', 'Dwarf']
-
-cclass = cclass[rand_four()]
-race = race[rand_four()]
-backstory = get_backstory()
-name = backstory.split(",")
-name = name[0]
-
-transactions = [
-        Character(\
-               ['Str: ' + str(d20()),\
-                'Dex: ' + str(d20()),\
-                'Con: ' + str(d20()),\
-                'Int: ' + str(d20()),\
-                'Wis: ' + str(d20()),\
-                'Chr: ' + str(d20())],\
-                name, race, cclass, backstory),
-        ]
