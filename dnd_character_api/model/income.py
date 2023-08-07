@@ -1,5 +1,5 @@
 from marshmallow import post_load
-from .transaction import Character, CharacterSchema
+from .character import Character, CharacterSchema
 
 class Character(Character):
     def __init__(self, stats, name, race, cclass, backstory):
