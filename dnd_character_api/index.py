@@ -1,7 +1,7 @@
 import openai
 from flask import Flask, jsonify
 from random import randint
-from dnd_character_api.model.income import Character, CharacterSchema
+from dnd_character_api.model.char_ import Character, CharacterSchema
 
 app = Flask(__name__)
 
@@ -19,7 +19,7 @@ def get_backstory(race, cclass):
                    make the characters name the first word followed by a comma.".format(
         race=race, cclass=cclass
     )
-    openai.api_key = "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"
+    openai.api_key = "<OPEN AI API KEY GOES HERE>"
     message = [{"role": "system", "content": backstory_q}]
     backstory = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=message)
     backstory = backstory.choices[0].message.content
